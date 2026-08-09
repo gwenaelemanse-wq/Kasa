@@ -1,23 +1,16 @@
 import { getProperties } from "@/lib/api";
+import PropertyCard from "@/components/PropertyCard";
 
 export default async function Home() {
   const properties = await getProperties();
 
-  // Étape 2 : vérification que la connexion à l'API fonctionne
-  console.log("Propriétés récupérées depuis l'API :", properties);
-
   return (
-    <div style={{ padding: "2rem" }}>
-      <h1>Kasa — Données temporaires (test API)</h1>
-      <p>{properties.length} logements récupérés depuis le backend.</p>
-      <ul>
+    <div className="mx-auto max-w-6xl px-6 py-8">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {properties.map((property) => (
-          <li key={property.id}>
-            <strong>{property.title}</strong> — {property.location} —{" "}
-            {property.price_per_night}€/nuit
-          </li>
+          <PropertyCard key={property.id} property={property} />
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
