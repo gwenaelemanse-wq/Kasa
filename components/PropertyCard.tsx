@@ -1,8 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { PropertySummary } from "@/lib/api";
+import FavoriteButton from "@/components/FavoriteButton";
 
-// Composant SERVEUR : reçoit la donnée en props, l'affiche. Pas d'état, pas d'interaction.
+// Composant SERVEUR : reçoit la donnée en props, l'affiche.
+// Le bouton favori (interactif) est isolé dans son propre composant client.
 export default function PropertyCard({ property }: { property: PropertySummary }) {
   return (
     <Link
@@ -16,6 +18,7 @@ export default function PropertyCard({ property }: { property: PropertySummary }
           fill
           className="object-cover"
         />
+        <FavoriteButton propertyId={property.id} />
       </div>
       <div className="p-3">
         <h3 className="truncate font-semibold">{property.title}</h3>

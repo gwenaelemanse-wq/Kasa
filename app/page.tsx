@@ -16,8 +16,7 @@ export default async function Home() {
         alt="Bannière de la page d'accueil"
         className="mx-auto mb-8 rounded-lg shadow-md"
         width={1110}
-        height={80
-        }
+        height={80}
       />
       <div className="mx-auto max-w-6xl px-6 py-8">
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 ">
