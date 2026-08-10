@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import navigate from "next/navigation";
 
 // Composant CLIENT : nécessaire car le menu mobile a un état (ouvert/fermé)
 // géré avec useState, et une interaction au clic (onClick).
@@ -17,7 +18,7 @@ export default function Header() {
             <Link href="/">Accueil</Link>
           </li>
           <li>
-            <Link href="/a-propos">À propos</Link>
+            <Link href="/about">À propos</Link>
           </li>
         </ul>
 
@@ -81,7 +82,7 @@ export default function Header() {
               </Link>
             </li>
             <li>
-              <Link href="/a-propos" onClick={() => setIsMenuOpen(false)}>
+              <Link href="/about" onClick={() => setIsMenuOpen(false)}>
                 À propos
               </Link>
             </li>
