@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { PropertyDetail as PropertyDetailType } from "@/lib/api";
+import PropertyGallery from "@/components/PropertyGallery";
+import PropertyCollapse from "@/components/PropertyCollapse";
 
 // Composant SERVEUR : reçoit la donnée en props, affichage uniquement.
 export default function PropertyDetail({
@@ -8,8 +10,6 @@ export default function PropertyDetail({
 }: {
   property: PropertyDetailType;
 }) {
-  const [mainPicture, ...otherPictures] = property.pictures;
-
   return (
     <div className="mx-auto max-w-6xl px-6 py-8">
       <Link
@@ -22,54 +22,33 @@ export default function PropertyDetail({
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_300px]">
         {/* Colonne gauche : galerie + infos */}
         <div>
-          {/* Galerie : 1 grande image + 4 petites */}
-          <div className="grid grid-cols-3 grid-rows-2 gap-2 overflow-hidden rounded-2xl">
-            <div className="relative col-span-1 row-span-2 aspect-square md:aspect-auto">
-              <Image
-                src={mainPicture}
-                alt={property.title}
-                fill
-                className="object-cover"
-                priority
-              />
-            </div>
-            {otherPictures.map((picture, index) => (
-              <div key={picture} className="relative aspect-square">
-                <Image
-                  src={picture}
-                  alt={`${property.title} - photo ${index + 2}`}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            ))}
-          </div>
+          <PropertyGallery pictures={property.pictures} title={property.title} />
 
-          {/* Titre + localisation + description */}
           <div className="mt-6 rounded-2xl bg-white p-6 shadow-sm">
             <h1 className="text-xl font-bold">{property.title}</h1>
             <p className="mt-1 text-sm text-gray-500">{property.location}</p>
-            <p className="mt-4 text-sm text-gray-700">{property.description}</p>
 
-            <h2 className="mt-6 font-semibold">Équipements</h2>
-            <ul className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
-              {property.equipments.map((equipment) => (
-                <li
-                  key={equipment}
-                  className="rounded-lg bg-gray-100 px-3 py-2 text-center text-xs"
-                >
-                  {equipment}
-                </li>
-              ))}
-            </ul>
+            <PropertyCollapse title="Description" defaultOpen>
+              {property.description}
+            </PropertyCollapse>
+
+            <PropertyCollapse title="Équipements" defaultOpen>
+              <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                {property.equipments.map((equipment) => (
+                  <li
+                    key={equipment}
+                    className="rounded-lg bg-gray-100 px-3 py-2 text-center text-xs"
+                  >
+                    {equipment}
+                  </li>
+                ))}
+              </ul>
+            </PropertyCollapse>
 
             <h2 className="mt-6 font-semibold">Catégorie</h2>
             <ul className="mt-2 flex flex-wrap gap-2">
               {property.tags.map((tag) => (
-                <li
-                  key={tag}
-                  className="rounded-lg bg-gray-100 px-3 py-2 text-xs"
-                >
+                <li key={tag} className="rounded-lg bg-gray-100 px-3 py-2 text-xs">
                   {tag}
                 </li>
               ))}
