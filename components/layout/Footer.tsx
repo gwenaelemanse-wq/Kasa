@@ -11,7 +11,7 @@ export default function Footer() {
         <nav>
           <ul className="flex gap-4">
             <li>
-              <Link href="/">Accueil</Link>
+              
             </li>
           </ul>
         </nav>

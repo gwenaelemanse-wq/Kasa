@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { FavoritesProvider } from "@/context/FavoritesContext";
+import { AuthProvider } from "@/context/AuthContext";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -20,18 +22,27 @@ export const metadata: Metadata = {
   description: "Location d'appartements et de maisons entre particuliers",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+  modal,
+}: {
+  children: ReactNode;
+  modal: ReactNode;
+}) {
   return (
     <html
       lang="fr"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <FavoritesProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </FavoritesProvider>
+        <AuthProvider>
+          <FavoritesProvider>
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+            {modal}
+          </FavoritesProvider>
+        </AuthProvider>
       </body>
     </html>
   );

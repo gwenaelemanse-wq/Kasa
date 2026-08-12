@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { PropertyDetail as PropertyDetailType } from "@/lib/api";
 import PropertyGallery from "@/components/PropertyGallery";
-import PropertyCollapse from "@/components/PropertyCollapse";
+import Collapse from "@/components/PropertyCollapse";
 
 // Composant SERVEUR : reçoit la donnée en props, affichage uniquement.
 export default function PropertyDetail({
@@ -28,11 +28,11 @@ export default function PropertyDetail({
             <h1 className="text-xl font-bold">{property.title}</h1>
             <p className="mt-1 text-sm text-gray-500">{property.location}</p>
 
-            <PropertyCollapse title="Description" defaultOpen>
+            <Collapse title="Description" defaultOpen>
               {property.description}
-            </PropertyCollapse>
+            </Collapse>
 
-            <PropertyCollapse title="Équipements" defaultOpen>
+            <Collapse title="Équipements" defaultOpen>
               <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                 {property.equipments.map((equipment) => (
                   <li
@@ -43,7 +43,7 @@ export default function PropertyDetail({
                   </li>
                 ))}
               </ul>
-            </PropertyCollapse>
+            </Collapse>
 
             <h2 className="mt-6 font-semibold">Catégorie</h2>
             <ul className="mt-2 flex flex-wrap gap-2">
@@ -65,13 +65,19 @@ export default function PropertyDetail({
               <span className="rounded-full bg-[#FF6060] px-2 py-1 text-xs text-white">
                 ★ {property.rating_avg}
               </span>
-              <div className="relative h-10 w-10 overflow-hidden rounded-full">
-                <Image
-                  src={property.host.picture}
-                  alt={property.host.name}
-                  fill
-                  className="object-cover"
-                />
+              <div className="relative h-10 w-10 overflow-hidden rounded-full bg-gray-200">
+                {property.host.picture ? (
+                  <Image
+                    src={property.host.picture}
+                    alt={property.host.name}
+                    fill
+                    className="object-cover"
+                  />
+                ) : (
+                  <span className="flex h-full w-full items-center justify-center text-sm font-medium text-gray-500">
+                    {property.host.name.charAt(0).toUpperCase()}
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -82,12 +88,12 @@ export default function PropertyDetail({
           >
             Contacter l&apos;hôte
           </button>
-          <button
-            type="button"
-            className="mt-2 w-full rounded-full bg-[#FF6060] py-2 text-sm text-white"
+          <Link
+            href="/messagerie"
+            className="mt-2 block w-full rounded-full bg-[#FF6060] py-2 text-center text-sm text-white"
           >
             Envoyer un message
-          </button>
+          </Link>
         </aside>
       </div>
     </div>

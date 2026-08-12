@@ -42,3 +42,32 @@ export async function getPropertyById(id: string): Promise<PropertyDetail> {
   }
   return res.json();
 }
+
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+  picture: string;
+  role: "owner" | "client" | "admin";
+}
+
+export interface LoginResponse {
+  token: string;
+  user: User;
+}
+
+export async function login(email: string, password: string): Promise<LoginResponse> {
+  const res = await fetch(`${API_BASE_URL}/auth/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.error || "Échec de la connexion");
+  }
+
+  return data;
+}
