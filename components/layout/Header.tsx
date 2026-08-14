@@ -3,12 +3,12 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
-import { mockConversations } from "@/lib/mockMessages";
+import { useMessages } from "@/context/MessagesContext";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, logout } = useAuth();
-  const unreadCount = mockConversations.filter((conv) => conv.unread).length;
+  const { unreadCount } = useMessages();
 
   return (
     <header className="w-full border-b border-gray-100 bg-white">

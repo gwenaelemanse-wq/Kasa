@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { PropertyDetail as PropertyDetailType } from "@/lib/api";
 import PropertyGallery from "@/components/PropertyGallery";
+import ContactHostButton from "@/components/ContactHostButton";
 import Collapse from "@/components/PropertyCollapse";
 
 // Composant SERVEUR : reçoit la donnée en props, affichage uniquement.
@@ -88,12 +89,7 @@ export default function PropertyDetail({
           >
             Contacter l&apos;hôte
           </button>
-          <Link
-            href="/messagerie"
-            className="mt-2 block w-full rounded-full bg-[#FF6060] py-2 text-center text-sm text-white"
-          >
-            Envoyer un message
-          </Link>
+          <ContactHostButton propertyId={property.id} />
         </aside>
       </div>
     </div>

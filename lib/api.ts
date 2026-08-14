@@ -71,3 +71,25 @@ export async function login(email: string, password: string): Promise<LoginRespo
 
   return data;
 }
+
+// Inscription = toujours rôle "client" par défaut (voir BecomeHostPrompt pour
+// le passage en "owner" ensuite, choix de conception documenté).
+export async function register(
+  name: string,
+  email: string,
+  password: string
+): Promise<LoginResponse> {
+  const res = await fetch(`${API_BASE_URL}/auth/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, email, password }),
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.error || "Échec de l'inscription");
+  }
+
+  return data;
+}

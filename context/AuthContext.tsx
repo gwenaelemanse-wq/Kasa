@@ -7,7 +7,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { loginAction } from "@/lib/actions/auth";
+import { loginAction, registerAction } from "@/lib/actions/auth";
 import { updateUserRoleAction } from "@/lib/actions/users";
 import type { User } from "@/lib/api";
 
@@ -18,6 +18,7 @@ interface AuthContextValue {
   token: string | null;
   isLoaded: boolean;
   login: (email: string, password: string) => Promise<void>;
+  register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
   updateRole: (role: string) => Promise<void>;
 }
@@ -50,6 +51,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   }
 
+  async function register(name: string, email: string, password: string) {
+    const data = await registerAction(name, email, password);
+    setUser(data.user);
+    setToken(data.token);
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
+
   function logout() {
     setUser(null);
     setToken(null);
@@ -65,7 +73,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, token, isLoaded, login, logout, updateRole }}>
+    <AuthContext.Provider value={{ user, token, isLoaded, login, register, logout, updateRole }}>
       {children}
     </AuthContext.Provider>
   );

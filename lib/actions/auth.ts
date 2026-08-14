@@ -1,6 +1,6 @@
 "use server";
 
-import { login as loginRequest, type LoginResponse } from "@/lib/api";
+import { login as loginRequest, register as registerRequest, type LoginResponse } from "@/lib/api";
 
 // "use server" en haut du fichier = tout ce qui est exporté ici s'exécute
 // sur le serveur Next.js, même quand c'est appelé depuis un composant client.
@@ -10,4 +10,12 @@ export async function loginAction(
   password: string
 ): Promise<LoginResponse> {
   return loginRequest(email, password);
+}
+
+export async function registerAction(
+  name: string,
+  email: string,
+  password: string
+): Promise<LoginResponse> {
+  return registerRequest(name, email, password);
 }

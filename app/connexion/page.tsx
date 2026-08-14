@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 
@@ -30,12 +31,16 @@ export default function ConnexionPage() {
 
   return (
     <div className="mx-auto max-w-md px-6 py-12">
-      <h1 className="mb-6 text-2xl font-bold">Connexion</h1>
+      <h1 className="mb-2 text-2xl font-bold text-[#FF6060]">Heureux de vous revoir</h1>
+      <p className="mb-6 text-sm text-gray-500">
+        Connectez-vous pour retrouver vos réservations, vos annonces et tout
+        ce qui rend vos séjours uniques.
+      </p>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div>
           <label htmlFor="email" className="mb-1 block text-sm font-medium">
-            Email
+            Adresse email
           </label>
           <input
             id="email"
@@ -74,6 +79,16 @@ export default function ConnexionPage() {
         >
           {isSubmitting ? "Connexion..." : "Se connecter"}
         </button>
+
+        <div className="text-center text-sm">
+          {/* Fonctionnalité pas encore implémentée, lien visuel pour l'instant */}
+          <Link href="/mot-de-passe-oublie" className="text-[#FF6060] underline">
+            Mot de passe oublié
+          </Link>
+        </div>
+        <p className="text-center text-sm text-[#FF6060]">
+          Pas encore de compte ? <Link href="/inscription" className="underline">Inscrivez-vous</Link>
+        </p>
       </form>
     </div>
   );

@@ -5,6 +5,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { FavoritesProvider } from "@/context/FavoritesContext";
 import { AuthProvider } from "@/context/AuthContext";
+import { MessagesProvider } from "@/context/MessagesContext";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -36,12 +37,14 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <AuthProvider>
-          <FavoritesProvider>
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-            {modal}
-          </FavoritesProvider>
+          <MessagesProvider>
+            <FavoritesProvider>
+              <Header />
+              <main className="flex-1">{children}</main>
+              <Footer />
+              {modal}
+            </FavoritesProvider>
+          </MessagesProvider>
         </AuthProvider>
       </body>
     </html>
