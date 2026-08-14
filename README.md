@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kasa
 
-## Getting Started
+Application de location d'appartements et de maisons entre particuliers — projet réalisé dans le cadre de la formation Développeur d'application - JavaScript React (OpenClassrooms).
 
-First, run the development server:
+Refonte du front-end de la plateforme Kasa en Next.js (App Router), branché sur une API Express.js/SQLite fournie.
+
+## Stack technique
+
+- **Front-end** : Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4
+- **Back-end** : Express.js 5, SQLite, authentification JWT
+- **Tests** : Vitest, React Testing Library
+
+## Prérequis
+
+- Node.js 18+
+- npm
+
+## Installation et lancement
+
+Le projet est composé de deux applications séparées : le **front-end** (ce dépôt) et le **back-end** (dépôt séparé, fourni par ailleurs). Les deux doivent tourner en même temps.
+
+### 1. Lancer le back-end
+
+Depuis le dossier du back-end :
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Le serveur démarre sur `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 2. Configurer le front-end
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+À la racine de ce projet, crée un fichier `.env.local` :
 
-## Learn More
+```
+NEXT_PUBLIC_API_URL=http://localhost:3000
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 3. Lancer le front-end
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm install
+npm run dev -- -p 3001
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+> Le port `3001` est utilisé volontairement pour ne pas entrer en conflit avec le back-end, qui tourne déjà sur le port 3000.
 
-## Deploy on Vercel
+Le site est accessible sur `http://localhost:3001`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Lancer les tests
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm test
+```
+
+Tests unitaires présents sur :
+- Le carousel photo (`components/PropertyGallery.test.tsx`)
+- La gestion des favoris (`components/FavoriteButton.test.tsx`)
+
+## Comptes de test
+
+Pour tester les fonctionnalités nécessitant une connexion (favoris liés à un compte, ajout de logement, messagerie), crée un compte via la page `/inscription`, ou directement via l'API sur `http://localhost:3000/docs.html` (route `POST /auth/register`).
+
+Par défaut, tout nouveau compte a le rôle `client`. Pour publier une annonce, un compte `client` peut devenir hôte directement depuis l'interface (bouton "Devenir hôte" affiché lors de la première tentative d'accès à la page d'ajout de logement).
+
+## Choix techniques notables
+
+- **Server Actions** : les appels à l'API nécessitant une authentification (connexion, upload d'images, création de logement, messagerie) passent par des Server Actions Next.js plutôt que par des appels `fetch` directs côté client, afin d'éviter les blocages CORS liés à la séparation front/back sur deux ports différents.
+- **Route interceptée pour la messagerie** : la messagerie s'affiche en modale par-dessus la page courante lors d'une navigation classique (grâce aux routes interceptées de Next.js), tout en restant accessible en page complète via un accès direct à `/messagerie`.
+- **Favoris en `localStorage`** : les favoris sont stockés côté navigateur (pas besoin de compte), conformément aux spécifications du projet.
