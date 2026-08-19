@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { useRouter } from "next/navigation";
 import Modal from "@/components/Modal";
 import MessagerieContent from "@/components/MessagerieContent";
@@ -13,7 +14,9 @@ export default function MessagerieModal() {
 
   return (
     <Modal onClose={handleClose}>
-      <MessagerieContent onClose={handleClose} />
+      <Suspense fallback={null}>
+        <MessagerieContent onClose={handleClose} />
+      </Suspense>
     </Modal>
   );
 }
