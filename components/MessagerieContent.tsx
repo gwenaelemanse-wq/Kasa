@@ -1,20 +1,21 @@
 "use client";
 
 import { useEffect, useState, type FormEvent } from "react";
-import { useSearchParams } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { useMessages } from "@/context/MessagesContext";
 import { getMessagesAction, sendMessageAction, type Message } from "@/lib/actions/messages";
 
-export default function MessagerieContent({ onClose }: { onClose?: () => void }) {
+export default function MessagerieContent({
+  onClose,
+  initialConversationId = null,
+}: {
+  onClose?: () => void;
+  initialConversationId?: number | null;
+}) {
   const { user, token } = useAuth();
   const { conversations, isLoaded, refresh } = useMessages();
-  const searchParams = useSearchParams();
-  const initialConversationId = searchParams.get("conversation");
 
-  const [selectedId, setSelectedId] = useState<number | null>(
-    initialConversationId ? Number(initialConversationId) : null
-  );
+  const [selectedId, setSelectedId] = useState<number | null>(initialConversationId);
   const [messages, setMessages] = useState<Message[]>([]);
   const [draft, setDraft] = useState("");
   const [isSending, setIsSending] = useState(false);

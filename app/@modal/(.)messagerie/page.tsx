@@ -1,22 +1,12 @@
-"use client";
+import MessagerieModalClient from "@/components/MessagerieModalClient";
 
-import { Suspense } from "react";
-import { useRouter } from "next/navigation";
-import Modal from "@/components/Modal";
-import MessagerieContent from "@/components/MessagerieContent";
+export default async function MessagerieModalPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ conversation?: string }>;
+}) {
+  const params = await searchParams;
+  const initialConversationId = params.conversation ? Number(params.conversation) : null;
 
-export default function MessagerieModal() {
-  const router = useRouter();
-
-  function handleClose() {
-    router.back();
-  }
-
-  return (
-    <Modal onClose={handleClose}>
-      <Suspense fallback={null}>
-        <MessagerieContent onClose={handleClose} />
-      </Suspense>
-    </Modal>
-  );
+  return <MessagerieModalClient initialConversationId={initialConversationId} />;
 }
