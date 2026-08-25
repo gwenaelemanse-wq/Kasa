@@ -13,6 +13,10 @@ const nextConfig: NextConfig = {
         hostname: "localhost",
         port: "3000",
       },
+      {
+        protocol: "https",
+        hostname: "kasa-backend-5m9j.onrender.com",
+      },
     ],
   },
 };
