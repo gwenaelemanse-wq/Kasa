@@ -179,7 +179,8 @@ export default function AjouterLogementForm() {
         hostFormData.append("file", hostPhoto.file);
         hostFormData.append("purpose", "user-picture");
         const hostResult = await uploadImageAction(hostFormData, token);
-        await updateProfilePicture(hostResult.url);
+        if (!hostResult.success) throw new Error(hostResult.error);
+        await updateProfilePicture(hostResult.data.url);
       }
 
       // Upload de la couverture en premier
@@ -187,6 +188,7 @@ export default function AjouterLogementForm() {
       coverFormData.append("file", coverPhoto!.file);
       coverFormData.append("purpose", "property-cover");
       const coverResult = await uploadImageAction(coverFormData, token);
+      if (!coverResult.success) throw new Error(coverResult.error);
 
       // Puis upload des autres photos du logement
       const uploadedUrls: string[] = [];
@@ -195,27 +197,29 @@ export default function AjouterLogementForm() {
         formData.append("file", photo.file);
         formData.append("purpose", "property-picture");
         const result = await uploadImageAction(formData, token);
-        uploadedUrls.push(result.url);
+        if (!result.success) throw new Error(result.error);
+        uploadedUrls.push(result.data.url);
       }
 
       const fullLocation = postalCode.trim() ? `${location} - ${postalCode}` : location;
 
-      const property = await createPropertyAction(
+      const propertyResult = await createPropertyAction(
         {
           title,
           description,
           location: fullLocation,
           price_per_night: Number(price),
           host_id: user.id,
-          cover: coverResult.url,
-          pictures: [coverResult.url, ...uploadedUrls],
+          cover: coverResult.data.url,
+          pictures: [coverResult.data.url, ...uploadedUrls],
           equipments: selectedEquipments,
           tags: selectedTags,
         },
         token
       );
+      if (!propertyResult.success) throw new Error(propertyResult.error);
 
-      router.push(`/logement/${property.id}`);
+      router.push(`/logement/${propertyResult.data.id}`);
     } catch (err) {
       setSubmitError(err instanceof Error ? err.message : "Une erreur est survenue");
     } finally {
@@ -419,7 +423,7 @@ export default function AjouterLogementForm() {
               {errors.photos && <p className="mt-1 text-xs text-red-600">{errors.photos}</p>}
 
               {photos.length < MAX_PHOTOS && (
-                <label className="inline-flex cursor-pointer items-center gap-2 text-sm text-[#99331A]">
+                <label className="inline-flex cursor-pointer items-center gap-2 text-sm text-[#FF6060]">
                   + Ajouter une image
                   <input
                     type="file"
@@ -473,7 +477,7 @@ export default function AjouterLogementForm() {
               {errors.hostPhoto && (
                 <p className="text-xs text-red-600">{errors.hostPhoto}</p>
               )}
-              <label className="mb-2 inline-flex cursor-pointer items-center gap-2 text-sm text-[#99331A]">
+              <label className="mb-2 inline-flex cursor-pointer items-center gap-2 text-sm text-[#FF6060]">
                 + Ajouter une image
                 <input
                   type="file"
@@ -482,7 +486,9 @@ export default function AjouterLogementForm() {
                   className="hidden"
                 />
               </label>
-             
+              <p className="text-xs text-gray-400">
+                Optionnelle — remplace la photo de profil de votre compte.
+              </p>
             </div>
           </div>
         </div>

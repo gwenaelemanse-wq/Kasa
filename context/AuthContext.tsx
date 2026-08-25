@@ -76,18 +76,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function updateRole(role: string) {
     if (!user || !token) throw new Error("Non connecté");
-    const updatedUser = await updateUserRoleAction(user.id, role, token);
-    const newUser = { ...user, ...updatedUser };
+    const result = await updateUserRoleAction(user.id, role, token);
+    if (!result.success) throw new Error(result.error);
+    const newUser = { ...user, ...result.data.user };
+    const newToken = result.data.token || token;
     setUser(newUser);
-    sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ user: newUser, token }));
+    setToken(newToken);
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ user: newUser, token: newToken }));
   }
 
   async function updateProfilePicture(pictureUrl: string) {
     if (!user || !token) throw new Error("Non connecté");
-    const updatedUser = await updateUserPictureAction(user.id, pictureUrl, token);
-    const newUser = { ...user, ...updatedUser };
+    const result = await updateUserPictureAction(user.id, pictureUrl, token);
+    if (!result.success) throw new Error(result.error);
+    const newUser = { ...user, ...result.data.user };
+    const newToken = result.data.token || token;
     setUser(newUser);
-    sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ user: newUser, token }));
+    setToken(newToken);
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ user: newUser, token: newToken }));
   }
 
   return (
