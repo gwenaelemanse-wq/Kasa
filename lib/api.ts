@@ -28,7 +28,7 @@ export interface PropertyDetail extends PropertySummary {
 }
 
 export async function getProperties(): Promise<PropertySummary[]> {
-  const res = await fetch(`${API_BASE_URL}/api/properties`);
+  const res = await fetch(`${API_BASE_URL}/api/properties`, { cache: "no-store" });
   if (!res.ok) {
     throw new Error(`Erreur lors de la récupération des propriétés: ${res.status}`);
   }
@@ -36,7 +36,7 @@ export async function getProperties(): Promise<PropertySummary[]> {
 }
 
 export async function getPropertyById(id: string): Promise<PropertyDetail> {
-  const res = await fetch(`${API_BASE_URL}/api/properties/${id}`);
+  const res = await fetch(`${API_BASE_URL}/api/properties/${id}`, { cache: "no-store" });
   if (!res.ok) {
     throw new Error(`Erreur lors de la récupération de la propriété ${id}: ${res.status}`);
   }
