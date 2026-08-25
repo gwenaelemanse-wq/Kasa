@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { useMessages } from "@/context/MessagesContext";
@@ -22,8 +23,8 @@ export default function Header() {
           </li>
         </ul>
 
-        <Link href="/" className="text-xl font-bold text-[#FF6060]">
-          Kasa
+        <Link href="/" aria-label="Retour à l'accueil Kasa">
+          <Image src="/images/Logo.png" alt="Kasa" width={100} height={40} priority />
         </Link>
 
         <div className="hidden items-center gap-4 md:flex">
