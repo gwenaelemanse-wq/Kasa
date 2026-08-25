@@ -8,7 +8,7 @@ import {
   type ReactNode,
 } from "react";
 import { loginAction, registerAction } from "@/lib/actions/auth";
-import { updateUserRoleAction } from "@/lib/actions/users";
+import { updateUserRoleAction, updateUserPictureAction } from "@/lib/actions/users";
 import type { User } from "@/lib/api";
 
 const STORAGE_KEY = "kasa-auth";
@@ -21,6 +21,7 @@ interface AuthContextValue {
   register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
   updateRole: (role: string) => Promise<void>;
+  updateProfilePicture: (pictureUrl: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -45,17 +46,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   async function login(email: string, password: string) {
-    const data = await loginAction(email, password);
-    setUser(data.user);
-    setToken(data.token);
-    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    const result = await loginAction(email, password);
+    if (!result.success) {
+      // Ce throw se produit ENTIÈREMENT côté client : on ne fait que relire
+      // un champ .error déjà présent dans un objet normal reçu du serveur,
+      // donc aucune erreur ne traverse la frontière serveur/client.
+      throw new Error(result.error);
+    }
+    setUser(result.data.user);
+    setToken(result.data.token);
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(result.data));
   }
 
   async function register(name: string, email: string, password: string) {
-    const data = await registerAction(name, email, password);
-    setUser(data.user);
-    setToken(data.token);
-    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    const result = await registerAction(name, email, password);
+    if (!result.success) {
+      throw new Error(result.error);
+    }
+    setUser(result.data.user);
+    setToken(result.data.token);
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(result.data));
   }
 
   function logout() {
@@ -72,8 +82,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ user: newUser, token }));
   }
 
+  async function updateProfilePicture(pictureUrl: string) {
+    if (!user || !token) throw new Error("Non connecté");
+    const updatedUser = await updateUserPictureAction(user.id, pictureUrl, token);
+    const newUser = { ...user, ...updatedUser };
+    setUser(newUser);
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ user: newUser, token }));
+  }
+
   return (
-    <AuthContext.Provider value={{ user, token, isLoaded, login, register, logout, updateRole }}>
+    <AuthContext.Provider
+      value={{ user, token, isLoaded, login, register, logout, updateRole, updateProfilePicture }}
+    >
       {children}
     </AuthContext.Provider>
   );

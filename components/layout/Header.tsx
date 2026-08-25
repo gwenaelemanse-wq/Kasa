@@ -133,7 +133,7 @@ export default function Header() {
             className="mt-8 block rounded-full bg-[#FF6060] px-4 py-3 text-center text-sm font-medium text-white"
             onClick={() => setIsMenuOpen(false)}
           >
-            Ajouter un logement
+           + Ajouter un logement
           </Link>
         </div>
       )}
