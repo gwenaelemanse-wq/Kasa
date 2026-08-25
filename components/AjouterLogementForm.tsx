@@ -423,7 +423,7 @@ export default function AjouterLogementForm() {
               {errors.photos && <p className="mt-1 text-xs text-red-600">{errors.photos}</p>}
 
               {photos.length < MAX_PHOTOS && (
-                <label className="inline-flex cursor-pointer items-center gap-2 text-sm text-[#FF6060]">
+                <label className="inline-flex cursor-pointer items-center gap-2 text-sm text-[#99331A] ">
                   + Ajouter une image
                   <input
                     type="file"
@@ -477,7 +477,7 @@ export default function AjouterLogementForm() {
               {errors.hostPhoto && (
                 <p className="text-xs text-red-600">{errors.hostPhoto}</p>
               )}
-              <label className="mb-2 inline-flex cursor-pointer items-center gap-2 text-sm text-[#FF6060]">
+              <label className="mb-2 inline-flex cursor-pointer items-center gap-2 text-sm text-[#99331A] ">
                 + Ajouter une image
                 <input
                   type="file"
@@ -486,7 +486,7 @@ export default function AjouterLogementForm() {
                   className="hidden"
                 />
               </label>
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-gray-600">
                 Optionnelle — remplace la photo de profil de votre compte.
               </p>
             </div>
@@ -534,9 +534,12 @@ export default function AjouterLogementForm() {
               ))}
             </div>
 
-            <p className="mb-1 text-sm font-medium">Ajouter une catégorie personnalisée</p>
+            <label htmlFor="customTag" className="mb-1 block text-sm font-medium">
+              Ajouter une catégorie personnalisée
+            </label>
             <div className="flex items-center gap-2">
               <input
+                id="customTag"
                 type="text"
                 placeholder="Nouveau tag"
                 value={customTag}

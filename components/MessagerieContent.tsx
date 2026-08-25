@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useMessages } from "@/context/MessagesContext";
 import { getMessagesAction, sendMessageAction, type Message } from "@/lib/actions/messages";
@@ -20,19 +20,18 @@ export default function MessagerieContent({
   const [draft, setDraft] = useState("");
   const [isSending, setIsSending] = useState(false);
 
-  // Si aucune conversation n'était présélectionnée par l'URL, on ouvre
-  // la première de la liste dès qu'elle est chargée.
+  // On ne veut sélectionner automatiquement la première conversation
+  // qu'UNE SEULE FOIS au premier chargement — sinon, revenir à la liste sur
+  // mobile (qui remet selectedId à null) re-sélectionnerait aussitôt la
+  // première conversation, et le bouton "retour" ne servirait à rien.
+  const hasAutoSelected = useRef(false);
   useEffect(() => {
-    if (!selectedId && conversations.length > 0) {
+    if (!hasAutoSelected.current && !selectedId && conversations.length > 0) {
       setSelectedId(conversations[0].id);
+      hasAutoSelected.current = true;
     }
   }, [conversations, selectedId]);
 
-  // Chargement des messages à chaque changement de conversation sélectionnée.
-  // Le simple fait d'appeler getMessagesAction marque les messages comme lus
-  // côté back-end (voir services/messagesService.js) — donc juste après,
-  // on rafraîchit le Context pour que le badge et la liste se mettent à
-  // jour PARTOUT (Header inclus), sans avoir besoin de recharger la page.
   useEffect(() => {
     if (!token || !selectedId) return;
     getMessagesAction(selectedId, token).then((data) => {
@@ -51,8 +50,6 @@ export default function MessagerieContent({
       const newMessage = await sendMessageAction(selectedId, draft, token);
       setMessages((prev) => [...prev, newMessage]);
       setDraft("");
-      // Un nouveau message change le dernier aperçu affiché dans la liste
-      // des conversations : on rafraîchit pour que ça se voie tout de suite.
       refresh();
     } finally {
       setIsSending(false);
@@ -69,10 +66,18 @@ export default function MessagerieContent({
     );
   }
 
+  // Sur mobile, on affiche SOIT la liste, SOIT le fil de discussion, jamais
+  // les deux : la liste si aucune conversation n'est sélectionnée, le fil
+  // sinon. À partir de la taille tablette (md), les deux sont toujours
+  // visibles côte à côte, quel que soit selectedId.
+  const showListOnMobile = !selectedId;
+
   return (
     <div className="flex h-[85vh] max-h-[700px] md:h-[600px]">
       {/* Liste des conversations */}
-      <div className="hidden w-full max-w-xs flex-col border-r border-gray-100 p-4 md:flex">
+      <div
+        className={`${showListOnMobile ? "flex" : "hidden"} w-full max-w-xs flex-col border-r border-gray-100 p-4 md:flex`}
+      >
         {onClose && (
           <button
             type="button"
@@ -84,9 +89,7 @@ export default function MessagerieContent({
         )}
         <h1 className="mb-4 text-2xl font-bold">Messages</h1>
 
-        {!isLoaded && (
-          <p className="text-sm text-gray-400">Chargement...</p>
-        )}
+        {!isLoaded && <p className="text-sm text-gray-400">Chargement...</p>}
 
         {isLoaded && conversations.length === 0 && (
           <p className="text-sm text-gray-400">Aucune conversation pour l&apos;instant.</p>
@@ -121,17 +124,28 @@ export default function MessagerieContent({
       </div>
 
       {/* Fil de discussion */}
-      <div className="flex flex-1 flex-col bg-[#FFF8F5]">
-        {onClose && (
+      <div
+        className={`${showListOnMobile ? "hidden" : "flex"} flex-1 flex-col bg-[#FFF8F5] md:flex`}
+      >
+        {/* Barre mobile : retour à la liste + fermer complètement */}
+        <div className="flex items-center justify-between p-4 md:hidden">
           <button
             type="button"
-            onClick={onClose}
-            aria-label="Fermer la messagerie"
-            className="self-end p-4 md:hidden"
+            onClick={() => setSelectedId(null)}
+            className="rounded-full border border-gray-200 bg-white px-3 py-1.5 text-sm"
           >
-            ✕
+            ← Conversations
           </button>
-        )}
+          {onClose && (
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Fermer la messagerie"
+            >
+              ✕
+            </button>
+          )}
+        </div>
 
         {!selectedConversation ? (
           <div className="flex flex-1 items-center justify-center text-sm text-gray-400">
@@ -172,6 +186,7 @@ export default function MessagerieContent({
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
                 placeholder="Envoyer un message"
+                aria-label="Écrire un message"
                 className="flex-1 rounded-full border border-gray-200 px-4 py-2 text-sm outline-none"
               />
               <button

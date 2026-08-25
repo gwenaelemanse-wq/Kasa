@@ -24,10 +24,16 @@ export default function Header() {
         </ul>
 
         <Link href="/" aria-label="Retour à l'accueil Kasa">
+          {/* alt="" volontairement vide sur les deux images : le Link parent
+              porte déjà le aria-label, donc le nom accessible est déjà donné.
+              Mettre un vrai alt ici dupliquerait l'annonce pour les lecteurs
+              d'écran (et WAVE signale à juste titre deux images "voisines"
+              avec le même texte alternatif, vu qu'une seule est visible à la
+              fois mais les deux existent dans le DOM). */}
           {/* Icône seule sur mobile */}
           <Image
             src="/images/LogoIcon.png"
-            alt="Kasa"
+            alt=""
             width={32}
             height={32}
             priority
@@ -36,7 +42,7 @@ export default function Header() {
           {/* Logo complet à partir de la taille tablette */}
           <Image
             src="/images/Logo.png"
-            alt="Kasa"
+            alt=""
             width={100}
             height={40}
             priority
@@ -47,9 +53,9 @@ export default function Header() {
         <div className="hidden items-center gap-4 md:flex">
           <Link
             href="/ajouter-un-logement"
-            className="rounded-full bg-[#FF6060] px-4 py-2 text-sm font-medium text-white"
+            className=" px-4 py-2 text-sm font-medium text-[#99331A]"
           >
-            Ajouter un logement
+           + Ajouter un logement
           </Link>
           <Link href="/favoris" aria-label="Voir mes favoris">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
@@ -130,10 +136,10 @@ export default function Header() {
 
           <Link
             href="/ajouter-un-logement"
-            className="mt-8 block rounded-full bg-[#FF6060] px-4 py-3 text-center text-sm font-medium text-white"
+           className=" px-4 py-2 text-sm font-medium text-[#99331A]"
             onClick={() => setIsMenuOpen(false)}
           >
-           + Ajouter un logement
+            Ajouter un logement
           </Link>
         </div>
       )}
