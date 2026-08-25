@@ -24,7 +24,24 @@ export default function Header() {
         </ul>
 
         <Link href="/" aria-label="Retour à l'accueil Kasa">
-          <Image src="/images/Logo.png" alt="Kasa" width={100} height={40} priority />
+          {/* Icône seule sur mobile */}
+          <Image
+            src="/images/LogoIcon.png"
+            alt="Kasa"
+            width={32}
+            height={32}
+            priority
+            className="md:hidden"
+          />
+          {/* Logo complet à partir de la taille tablette */}
+          <Image
+            src="/images/Logo.png"
+            alt="Kasa"
+            width={100}
+            height={40}
+            priority
+            className="hidden md:block"
+          />
         </Link>
 
         <div className="hidden items-center gap-4 md:flex">
