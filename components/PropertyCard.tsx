@@ -24,10 +24,10 @@ export default function PropertyCard({ property }: { property: PropertySummary }
         <h3 className="truncate font-semibold">{property.title}</h3>
         <p className="truncate text-sm text-gray-500">{property.location}</p>
         <p className="mt-1 text-sm font-medium">
-          <span className="rounded-full bg-[#FF6060] px-2 py-0.5 text-white">
+          <span className=" px-2 py-0.5 text-black">
             {property.price_per_night}€
           </span>{" "}
-          <span className="text-gray-500">/nuit</span>
+          <span className="text-gray-500"> par nuit</span>
         </p>
       </div>
     </Link>
