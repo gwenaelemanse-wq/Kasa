@@ -53,9 +53,9 @@ export default function Header() {
         <div className="hidden items-center gap-4 md:flex">
           <Link
             href="/ajouter-un-logement"
-            className="rounded-full bg-[#99331A] px-4 py-2 text-sm font-medium text-white"
+            className=" block text-center text-sm font-medium text-[#99331A]"
           >
-            Ajouter un logement
+            + Ajouter un logement
           </Link>
           <Link href="/favoris" aria-label="Voir mes favoris">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
@@ -136,10 +136,10 @@ export default function Header() {
 
           <Link
             href="/ajouter-un-logement"
-            className="mt-8 block rounded-full bg-[#99331A] px-4 py-3 text-center text-sm font-medium text-white"
+            className="mt-8 block  px-4 py-3 text-center text-sm font-medium text-[#99331A]"
             onClick={() => setIsMenuOpen(false)}
           >
-            Ajouter un logement
+            + Ajouter un logement
           </Link>
         </div>
       )}
