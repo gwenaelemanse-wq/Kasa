@@ -3,6 +3,17 @@
 import { useState } from "react";
 import Image from "next/image";
 
+/**
+ * Carousel photo accessible pour la fiche détail d'un logement.
+ * - Navigation par flèches (au survol) et par miniatures.
+ * - Boucle entre la dernière et la première image.
+ * - Flèches masquées automatiquement s'il n'y a qu'une seule photo.
+ * - Navigable au clavier (flèches ← →) une fois le carousel focus.
+ * Testé unitairement dans PropertyGallery.test.tsx.
+ *
+ * @param pictures - Liste des URLs des photos du logement
+ * @param title - Titre du logement, utilisé pour les textes alternatifs des images
+ */
 export default function PropertyGallery({
   pictures,
   title,

@@ -4,6 +4,18 @@ import { useEffect, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 
+/**
+ * Composant de protection de route, générique et réutilisable pour n'importe
+ * quelle combinaison de rôles autorisés.
+ * - Redirige vers /connexion si personne n'est connecté.
+ * - Si le rôle de l'utilisateur ne correspond pas à allowedRoles :
+ *   - redirige vers l'accueil si aucun `fallback` n'est fourni ;
+ *   - sinon affiche `fallback` sur place (ex : proposer de "devenir hôte").
+ *
+ * @param allowedRoles - Liste des rôles ayant le droit de voir `children` (ex: ["owner", "admin"])
+ * @param children - Le contenu protégé, affiché uniquement si l'accès est autorisé
+ * @param fallback - Contenu alternatif affiché si le rôle ne correspond pas (optionnel)
+ */
 export default function RequireRole({
   allowedRoles,
   children,

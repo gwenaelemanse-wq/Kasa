@@ -2,6 +2,15 @@
 
 import { useState, type ReactNode } from "react";
 
+/**
+ * Accordéon générique et réutilisable : affiche un titre cliquable qui
+ * ouvre/ferme un contenu quelconque (children), avec une animation fluide.
+ * Utilisé pour les sections Description et Équipements de la fiche logement.
+ *
+ * @param title - Le texte affiché sur le bouton, toujours visible
+ * @param children - Le contenu masqué/affiché à l'ouverture
+ * @param defaultOpen - Si true, la section est ouverte au premier rendu (défaut : false)
+ */
 export default function Collapse({
   title,
   children,

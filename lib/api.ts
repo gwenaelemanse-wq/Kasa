@@ -27,6 +27,13 @@ export interface PropertyDetail extends PropertySummary {
   tags: string[];
 }
 
+/**
+ * Récupère la liste de tous les logements disponibles.
+ * `cache: "no-store"` désactive le cache Next.js pour toujours afficher les
+ * logements les plus récents (important après un ajout via le formulaire).
+ * @returns La liste des logements au format résumé (sans photos/équipements détaillés)
+ * @throws Si l'API répond avec un statut d'erreur
+ */
 export async function getProperties(): Promise<PropertySummary[]> {
   const res = await fetch(`${API_BASE_URL}/api/properties`, { cache: "no-store" });
   if (!res.ok) {
@@ -35,6 +42,11 @@ export async function getProperties(): Promise<PropertySummary[]> {
   return res.json();
 }
 
+/**
+ * Récupère le détail complet d'un logement (photos, équipements, catégories).
+ * @param id - L'identifiant unique du logement
+ * @throws Si le logement n'existe pas ou si l'API répond avec une erreur
+ */
 export async function getPropertyById(id: string): Promise<PropertyDetail> {
   const res = await fetch(`${API_BASE_URL}/api/properties/${id}`, { cache: "no-store" });
   if (!res.ok) {

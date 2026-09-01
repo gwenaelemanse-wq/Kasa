@@ -20,6 +20,12 @@ const FavoritesContext = createContext<FavoritesContextValue | undefined>(
   undefined
 );
 
+/**
+ * Fournit à toute l'application l'état des favoris, stockés dans le
+ * localStorage du navigateur (pas besoin de compte utilisateur). Charge la
+ * liste au premier rendu, puis la sauvegarde automatiquement à chaque
+ * modification. Doit envelopper l'app dans app/layout.tsx.
+ */
 export function FavoritesProvider({ children }: { children: ReactNode }) {
   const [favorites, setFavorites] = useState<string[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -61,6 +67,11 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
   );
 }
 
+/**
+ * Hook d'accès aux favoris depuis n'importe quel composant client.
+ * Doit être utilisé à l'intérieur de <FavoritesProvider>.
+ * @returns favorites (liste des ids), isFavorite(id), toggleFavorite(id)
+ */
 export function useFavorites() {
   const context = useContext(FavoritesContext);
   if (!context) {
