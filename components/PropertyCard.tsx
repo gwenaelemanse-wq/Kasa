@@ -32,11 +32,9 @@ export default function PropertyCard({ property }: { property: PropertySummary }
       <div className="p-3">
         <h3 className="truncate font-semibold">{property.title}</h3>
         <p className="truncate text-sm text-gray-500">{property.location}</p>
-        <p className="mt-1 text-sm font-medium">
-          <span className="rounded-full bg-[#99331A] px-2 py-0.5 text-white">
-            {property.price_per_night}€
-          </span>{" "}
-          <span className="text-gray-500">/nuit</span>
+        <p className="mt-1 text-sm font-medium text-black">
+          {property.price_per_night}€{" "}
+          <span className="font-normal text-gray-500">/nuit</span>
         </p>
       </div>
     </Link>
