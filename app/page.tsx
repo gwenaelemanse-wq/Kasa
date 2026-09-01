@@ -15,13 +15,16 @@ export default async function Home() {
         Avec Kasa, vivez des séjours uniques dans des hébergements chaleureux,
         sélectionnés avec soin par nos hôtes.
       </h2>
-      <Image
-        src="/images/banner.jpg"
-        alt="Bannière de la page d'accueil"
-        className="mx-auto mb-8 rounded-lg shadow-md"
-        width={1110}
-        height={80}
-      />
+      <div className="relative mx-auto mb-8 aspect-[3/1] w-full max-w-6xl px-6">
+        <Image
+          src="/images/banner.jpg"
+          alt="Bannière de la page d'accueil"
+          fill
+          priority
+          sizes="(max-width: 1152px) 100vw, 1152px"
+          className="rounded-lg object-cover shadow-md"
+        />
+      </div>
 
       <div className="mx-auto max-w-6xl px-6 py-8">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
