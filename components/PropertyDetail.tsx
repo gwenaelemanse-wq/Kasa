@@ -63,7 +63,7 @@ export default function PropertyDetail({
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">{property.host.name}</span>
             <div className="flex items-center gap-3">
-              <span className="rounded-full bg-[#FF6060] px-2 py-1 text-xs text-white">
+              <span className="rounded-full bg-[#99331A] px-2 py-1 text-xs text-white">
                 ★ {property.rating_avg}
               </span>
               <div className="relative h-10 w-10 overflow-hidden rounded-full bg-gray-200">
@@ -85,7 +85,7 @@ export default function PropertyDetail({
 
           <button
             type="button"
-            className="mt-4 w-full rounded-full bg-[#FF6060] py-2 text-sm text-white"
+            className="mt-4 w-full rounded-full bg-[#99331A] py-2 text-sm text-white"
           >
             Contacter l&apos;hôte
           </button>

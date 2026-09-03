@@ -35,7 +35,7 @@ export default function ContactHostButton({ propertyId }: { propertyId: string }
       type="button"
       onClick={handleClick}
       disabled={isLoading}
-      className="mt-2 w-full rounded-full bg-[#FF6060] py-2 text-sm text-white disabled:opacity-60"
+      className="mt-2 w-full rounded-full bg-[#99331A] py-2 text-sm text-white disabled:opacity-60"
     >
       {isLoading ? "..." : "Envoyer un message"}
     </button>
