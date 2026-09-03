@@ -193,7 +193,7 @@ export default function MessagerieContent({
                 type="submit"
                 disabled={isSending}
                 aria-label="Envoyer"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-[#FF6060] text-white disabled:opacity-60"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-[#99331A] text-white disabled:opacity-60"
               >
                 ↑
               </button>
